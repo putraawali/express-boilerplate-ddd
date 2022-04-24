@@ -11,9 +11,15 @@ const getSellerById =
     async (id) => {
         try {
             const sellerData = await getSellerByIdImpl(id);
-            return SellerData(sellerData);
+            return {
+                success: true,
+                data: SellerData(sellerData),
+            };
         } catch (err) {
-            return err;
+            return {
+                success: false,
+                message: err,
+            };
         }
     };
 

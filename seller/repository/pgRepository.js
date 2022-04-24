@@ -1,17 +1,21 @@
 const { getSellerById: generateSeller } = require("../domain/getSellerById");
 
-const getSellerById = ({ db }) => {
+const getSellerByIdRepository = ({ db }) => {
     return generateSeller(async (id) => {
         try {
             const data = await db.query(
                 `select * from "Seller" s where id = $1`,
                 [id]
             );
-            return data.rows[0];
+            if (data.rows.length === 0) {
+                throw "Seller Not found!";
+            } else {
+                return data.rows[0];
+            }
         } catch (error) {
-            return error;
+            throw error;
         }
     });
 };
 
-module.exports = { getSellerById };
+module.exports = { getSellerByIdRepository };
